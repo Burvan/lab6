@@ -15,6 +15,8 @@ public class Field extends JPanel {
 
                                     // Флаг приостановленности движения
     private boolean paused;
+    private boolean paused1;
+    private boolean resumeLol;
     
 
 
@@ -73,19 +75,38 @@ public class Field extends JPanel {
 
     public void pause() {
                                                // Включить режим паузы
-        paused = true;
+    	
+        	paused = true;
        
     }
+    
+    public  void pause1() {
+        // Включить режим паузы
+        paused1 = true;
+        paused = true;
+        resumeLol = false;
+
+    }
+    
+    public synchronized void resumeLol() {
+        // Включить режим паузы
+        paused = false;
+        resumeLol = true;
+        notifyAll();
+    }
+       
 
                                            // Метод синхронизированный, т.е. только один поток может
                                            // одновременно быть внутри
     public synchronized void resume() {
                                                // Выключить режим паузы
         paused = false;
+        paused1 = false;
+        
                                                // Будим все ожидающие продолжения потоки
         notifyAll();
     }
-
+    
 
                                            // Синхронизированный метод проверки, может ли мяч двигаться
                                            // (не включен ли режим паузы?)
@@ -93,12 +114,24 @@ public class Field extends JPanel {
             InterruptedException {
 
         if (paused) {
+        	if ( ball.gettime() > 8)
                 wait();
                                                // Если режим паузы включен, то поток, зашедший
                                                // внутрь данного метода, засыпает
                                                //wait();
                 }
-          }
-
+        if(paused1)
+            if(resumeLol)
+            {
+                if (ball.gettime() < 8)
+                    wait();
+            }
+            else
+                wait();
+        
+       
+        }
+    
+    
     }
 

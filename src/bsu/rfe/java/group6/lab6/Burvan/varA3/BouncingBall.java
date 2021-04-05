@@ -25,6 +25,8 @@ public class BouncingBall implements Runnable {
     private int speed;
     private double speedX;
     private double speedY;
+    
+    
 
 
 
@@ -41,6 +43,8 @@ public class BouncingBall implements Runnable {
                                         // чем он больше, тем медленнее
 
         speed = new Double(Math.round(5*MAX_SPEED / radius)).intValue();
+        
+         
 
 
         if (speed>MAX_SPEED) {
@@ -48,7 +52,10 @@ public class BouncingBall implements Runnable {
         }
                                         // Ќачальное направление скорости тоже случайно,
                                         // угол в пределах от 0 до 2PI
-        double angle = Math.random()*2*Math.PI;
+           double angle = Math.random()*2*Math.PI;
+           
+          
+        
                                         // ¬ычисл€ютс€ горизонтальна€ и вертикальна€ компоненты скорости
         speedX = 3*Math.cos(angle);
         speedY = 3*Math.sin(angle);
@@ -65,7 +72,11 @@ public class BouncingBall implements Runnable {
         thisThread.start();
     }
 
-                                   
+    public int gettime() {
+    	int time = 16 - speed;
+    	return time;
+
+    }                     
 
                                     // ћетод run() исполн€етс€ внутри потока.  огда он завершает работу,
                                     // то завершаетс€ и поток
@@ -79,6 +90,7 @@ public class BouncingBall implements Runnable {
                                                 // возвращено в метод
                                                 // ¬ противном случае - активный поток заснет
                 field.canMove(this);
+                
 
                                                 
                 if (x + speedX <= radius) {
@@ -115,11 +127,14 @@ public class BouncingBall implements Runnable {
                                                 // —корость = 15 (быстро), засыпаем на 1 мс.
                 Thread.sleep(16-speed);
             }
+            
         } catch (InterruptedException ex) {
                                             // ≈сли нас прервали, то ничего не делаем
                                             // и просто выходим (завершаемс€)
         }
     }
+    
+    
 
                                     // ћетод прорисовки самого себ€
     public void paint(Graphics2D canvas) {
